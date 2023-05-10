@@ -9,7 +9,7 @@ format:
 # Introcucción 
 Este documento contiene visualización de datos elaborado con lo paquetes ggplot2 y plotly de R.
 
-# Carga de paquetes
+# carga de paquetes
 ```{r}
 #| label: carga-paquetes
 #| Warning: false
@@ -125,10 +125,10 @@ covid_general |>
 
 ```
 
-## delitpos
+## delitos
 ```{r}
 #| label: carga-datos-delitos
-#| #| warning: false
+#| warning: false
 #| code-fold: true
 
 # Carga de datos
