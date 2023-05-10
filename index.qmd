@@ -1,0 +1,151 @@
+---
+title: "Graficacion en ggplot2-ploty"
+author: "Irina Pérez"
+format: 
+  html:
+   lang: es
+   toc: true
+---
+# Introcucción 
+Este documento contiene visualización de datos elaborado con lo paquetes ggplot2 y plotly de R.
+
+# Carga de paquetes
+```{r}
+#| label: carga-paquetes
+#| Warning: false
+#| code-fold: true
+
+library(tidyverse)
+library(plotly)
+library(DT)
+library(gapminder)
+```
+
+# Carga de Datos
+
+## mpg
+```{r}
+#| label: carga-datos-mpg
+#| #| warning: false
+#| code-fold: true
+
+# Despliegue de los datos mpg
+ mpg |>
+  datatable(
+    options = list(
+      pageLength = 5,
+      language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+    )
+  )
+
+```
+
+## diamonds
+```{r}
+#| label: carga-datoa-diamonds
+#| warning: false
+#| code-fold: true
+
+# Carga de datos de diamonds
+diamonds |>
+  datatable(
+    options = list(
+      pageLength = 5,
+      language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+    )
+  )
+```
+
+
+## gapminder
+```{r}
+#| label: carga-datos-gapminder
+#| warning: false
+#| code-fold: true
+
+# Carga de datos de gapminder
+gapminder |>
+  filter(year == 2007) |>
+  datatable(
+    options = list(
+      pageLength = 5,
+      language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+    )
+  )
+```
+
+## Covid
+```{r}
+#| label: carga-datos-covid
+#| warning: false
+#| code-fold: true
+
+# Carga del archivo CSV de entrada en un dataframe
+# con la función read_delim() de readr
+covid_general <-
+  read_delim(
+    file = "https://raw.githubusercontent.com/gf0604-procesamientodatosgeograficos/2023-i/main/datos/ministerio-salud/covid/05_30_22_CSV_GENERAL.csv",
+    col_select = c(
+      "FECHA",
+      "positivos",
+      "activos",
+      "RECUPERADOS",
+      "fallecidos",
+      "nue_posi",
+      "nue_falleci",
+      "salon",
+      "UCI"
+    )
+  )
+
+# Cambio de nombre de columnas
+covid_general <-
+  covid_general |>
+  rename(
+    fecha = FECHA,
+    recuperados = RECUPERADOS,
+    nuevos_positivos = nue_posi,
+    nuevos_fallecidos = nue_falleci,
+    uci = UCI
+  )
+
+# Cambio de tipo de datos de la columna fecha, de str a date
+covid_general <-
+  covid_general |>
+  mutate(fecha = as.Date(fecha, format = "%d/%m/%Y"))
+
+# Tabla de datos de COVID generales
+covid_general |>
+  datatable(
+    options = list(
+      pageLength = 5,
+      language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+    )
+  )
+
+```
+
+## delitpos
+```{r}
+#| label: carga-datos-delitos
+#| #| warning: false
+#| code-fold: true
+
+# Carga de datos
+delitos_2022 <-
+  read_delim(
+    file = "https://raw.githubusercontent.com/gf0604-procesamientodatosgeograficos/2023-i/main/datos/oij/estadisticas-policiales/estadisticaspoliciales2022.csv"
+  )
+
+# Tabla de datos
+delitos_2022 |>
+  datatable(
+    options = list(
+      pageLength = 5,
+      language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+    )
+  )
+```
+
+
+
