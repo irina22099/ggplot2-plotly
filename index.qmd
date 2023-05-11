@@ -9,11 +9,13 @@ format:
 # Introcucción 
 Este documento contiene visualización de datos elaborado con lo paquetes ggplot2 y plotly de R.
 
+
 # carga de paquetes
 ```{r}
 #| label: carga-paquetes
 #| Warning: false
 #| code-fold: true
+
 
 library(tidyverse)
 library(plotly)
@@ -146,6 +148,173 @@ delitos_2022 |>
     )
   )
 ```
+
+# Conceptos basicos de graficacion
+```{r}
+#| label: graficos-basicos
+#| warning: false
+#| code-fold: true
+
+# forma basica
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+# forma con pipes
+mpg |>
+  ggplot(aes(x = displ, y = hwy)) +
+        geom_point()
+
+# Variables adiciononales
+mpg |>
+  ggplot(aes(x = displ, y = hwy, color = class)) +
+        geom_point()
+
+
+# Variables adiciononales-forma
+mpg |>
+  ggplot(aes(x = displ, y = hwy, shape = class)) +
+        geom_point()
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# con formas y colores correspondientes al tipo de automóvil
+mpg |>
+  ggplot(aes(x = displ, y = hwy, shape = class, color = class)) +
+  geom_point() +
+  scale_shape_manual(values = c(0, 1, 2, 3, 4, 5, 6)) +
+  scale_color_manual(values = c("red", "blue", "green", "purple", "orange", "brown", "pink"))
+
+# Gráfico de dispersión de rendimiento en autopista vs rendimiento en ciudad
+# con tamaño de puntos correspondiente a la cilindrada
+mpg |>
+  ggplot(aes(x = hwy, y = cty, size = displ)) +
+  geom_point()
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# + curva de tendencia
+mpg |>
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_smooth()
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# coloreado por tipo de tracción
+# + curva de tendencia
+mpg |>
+  ggplot(aes(x = displ, y = hwy, color = drv)) +
+  geom_point() +
+  geom_smooth()
+
+# Grafico de dispersion de de cilindros vs rendimineto en ciudad
+# y que muestre la varible de tipo de cobustible (fl)
+```
+
+## paneles
+```{r}
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# + paneles por tipo de automóvil
+mpg |>
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_wrap(~ class, nrow = 4, ncol= 2)
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# + paneles por tipo de automóvil y tipo de tracción
+mpg |>
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_grid(class ~ drv)
+```
+
+## estilos
+```{r}
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# coloreado por tipo de tracción con título, subtítulo y etiquetas
+mpg |>
+  ggplot(aes(x = displ, y = hwy, color = drv)) +
+  geom_point() +
+  geom_smooth() +
+  ggtitle("Cilindrada vs rendimiento en autopista por tipo de tracción") +
+  xlab("Cilindrada (l)") +
+  ylab("Rendimiento en autopista (mpg)") +
+  labs(subtitle = "Datos de 38 modelos de automóviles de años entre 1999 y 2008", 
+       caption = "Fuente: United States Environmental Protection Agency (EPA)",
+       color = "Tipo de tracción")
+```
+
+# Conceptos basicos de graficacion
+todo gráfico rn ggplot2 tiene 3 componentes
+
+1. Datos (datafram).
+2. un mapeo (asociacion) de las variabls el conjunto de datos on las propiedades visuales del grafico: ej x, eje y, tamaño, forma, color, etc. (funvion aes())
+3. una o vari capas de geometrias: puntos, barra, caja, histogramas, etc. (geom_point(), deo_box(), geom_smooth())
+
+```{r}
+#| label: grafico-basico
+#| warning: false
+#| code-fold: true
+
+mpg |>
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point()
+
+# Variables adicionales - color
+mpg |>
+  ggplot(aes(x = displ, y = hwy , color = cyl)) +
+  geom_point()
+
+# Variables adicionales - tamaño
+mpg |>
+  ggplot(aes(x = displ, y = hwy , size = cyl)) +
+  geom_point()
+
+# Variables adicionales - forma
+mpg |>
+  ggplot(aes(x = displ, y = hwy , shape = class)) +
+  geom_point()
+
+
+```
+
+## capas adicionales
+
+```{r}
+#| label: capas-adicionales
+#| warning: false
+#| code-fold: true
+
+mpg |>
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+
+mpg |>
+  ggplot(aes(x = displ, y = hwy, color = drv)) +
+  geom_point() +
+  geom_smooth()
+
+```
+
+## paneles(facet)
+```{r}
+#| label: facet
+mpg |>
+  ggplot(aes(x = displ, y = hwy , shape = class)) +
+  geom_point() +
+  facet_wrap(~ class, ncol = 2)
+```
+
+```{r}
+#| label: facet-grid
+mpg |>
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_grid(class ~ drv)
+```
+```
+
+
 
 
 
