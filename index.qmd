@@ -15,7 +15,7 @@ Este documento contiene visualización de datos elaborado con lo paquetes ggplot
 ```{r}
 #| label: carga-paquetes
 #| Warning: false
-#| code-fold: true
+#| message: false
 
 
 library(tidyverse)
@@ -31,7 +31,7 @@ library(hrbrthemes)
 ## mpg
 ```{r}
 #| label: carga-datos-mpg
-#| #| warning: false
+#| warning: false
 #| code-fold: true
 
 # Despliegue de los datos mpg
@@ -154,11 +154,11 @@ delitos_2022 |>
 
 
 # Conceptos basicos de graficacion
-todo gráfico rn ggplot2 tiene 3 componentes
+Todo gráfico rn ggplot2 tiene 3 componentes
 
 1. Datos (datafram).
-2. un mapeo (asociacion) de las variabls el conjunto de datos on las propiedades visuales del grafico: ej x, eje y, tamaño, forma, color, etc. (funvion aes())
-3. una o vari capas de geometrias: puntos, barra, caja, histogramas, etc. (geom_point(), deo_box(), geom_smooth())
+2. Un mapeo (asociacion) de las variabls el conjunto de datos on las propiedades visuales del grafico: ej x, eje y, tamaño, forma, color, etc. (funvion aes())
+3. Una o vari capas de geometrias: puntos, barra, caja, histogramas, etc. (geom_point(), deo_box(), geom_smooth())
 
 ```{r}
 #| label: grafico-basico
@@ -241,7 +241,7 @@ mpg |>
 #| label: facet
 #| warning: false
 #| code-fold: true
-#| 
+ 
 mpg |>
   ggplot(aes(x = displ, y = hwy , shape = class)) +
   geom_point() +
@@ -278,6 +278,42 @@ mpg |>
   theme_economist()
 ```
 
+## coleres
+```{r}
+#| label: colores
+#| warning: false
+#| code-fold: true
+
+diamonds |>
+  ggplot(aes(x = carat, y = price, color = clarity)) +
+  geom_point() +
+  ggtitle("Peso vs precio de diamantes") +
+  xlab("Peso (quilates)") +
+  ylab("Precio ($ EE.UU.)") +
+  labs(color = "Claridad\n(I1=peor IF=mejor)") +
+   scale_colour_brewer(palette = "PuBu", direction = -1) 
+
+```
+
+## ploty
+
+```{r}
+#| label: plotly
+#| warning: false
+#| code-fold: true
+
+grafico_ggplot2 <-
+mpg |>
+  ggplot(aes(x = displ, y = hwy, color = drv)) +
+  geom_point(
+    aes(
+      text = paste0("Fabricante: ", manufacturer, " ", model, " ", year)
+      )
+    )
+  
+ggplotly(grafico_ggplot2, tooltip = "text") |>
+  config(locale = 'es')
+```
 
 
 
